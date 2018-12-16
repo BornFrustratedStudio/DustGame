@@ -81,7 +81,6 @@ public class FmodEvent : ScriptableObject
     #endregion
 
     #region Public-Method
-
     /// <summary>
     /// Called to initialize the fmod event amd parameters
     /// </summary>
@@ -136,14 +135,34 @@ public class FmodEvent : ScriptableObject
             Debug.LogWarning("Build this event befor play!");
     }
 
+    /// <summary>
+    /// Attach the fmodEvent to a transfom
+    /// </summary>
+    /// <param name="_target">target transfomr</param>
     public void FollowTarget(Transform _target)
     {
         RuntimeManager.AttachInstanceToGameObject(m_fmodEventInstance, _target, _target.GetComponent<Rigidbody>());
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="_position"></param>
     public void PlayOneShoot(Vector3 _position)
     {
         RuntimeManager.PlayOneShot(m_eventPath, _position);
+    }
+
+    /// <summary>
+    /// Check if this fmoodevent is playing
+    /// </summary>
+    /// <param name="_eventInstances"></param>
+    /// <returns></returns>
+    public bool IsPlaying(EventInstance _eventInstances)
+    {
+        PLAYBACK_STATE playbackState;
+        _eventInstances.getPlaybackState(out playbackState);
+        return playbackState != PLAYBACK_STATE.STOPPED;
     }
 
     /// <summary>
@@ -198,18 +217,16 @@ public class FmodEvent : ScriptableObject
         eventDescription.getMaximumDistance(out m_maxDistance);
         eventDescription.getMinimumDistance(out m_minumDistance);
 
-        USER_PROPERTY ada;
-        int userPropertyCount;
-        eventDescription.getUserPropertyCount(out userPropertyCount);
-        Debug.Log(userPropertyCount);
+        //USER_PROPERTY ada;
+        //int userPropertyCount;
+        //eventDescription.getUserPropertyCount(out userPropertyCount);
+        //Debug.Log(userPropertyCount);
 
-        for (int i = 0; i < userPropertyCount; i++)
-        {
-            eventDescription.getUserPropertyByIndex(i, out ada);
-            Debug.Log(ada.name);
-        }
-
-
+        //for (int i = 0; i < userPropertyCount; i++)
+        //{
+        //    eventDescription.getUserPropertyByIndex(i, out ada);
+        //    Debug.Log(ada.name);
+        //}
 
         ///Get number of instance enabled
         eventDescription.getInstanceCount(out m_instanceCount);
@@ -244,6 +261,13 @@ public class FmodEvent : ScriptableObject
         return parameterInfo;
     }
 
+    /// <summary>
+    /// Check if this parameter exist
+    /// get out the parameter index if exist
+    /// </summary>
+    /// <param name="_name">parameter name</param>
+    /// <param name="index">parameter index out</param>
+    /// <returns></returns>
     private bool HasParameter(string _name, out int index)
     {
         for (int i = 0; i < m_parameterInfo.Length; i++)
