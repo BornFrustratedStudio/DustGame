@@ -10,22 +10,28 @@ public enum Rarity
     Unique
 }
 
-
 [CreateAssetMenu(menuName ="Item/NewItem")]
-public class Item : MonoBehaviour
+public class Item : ScriptableObject
 {
+    [Header("Item ID")]
     [SerializeField]
     private int m_id;
-    [SerializeField]
-    private Sprite m_graphic;
+    [Header("Item Name")]    
     [SerializeField]
     private string m_name;
+    [Header("Item Description")]
     [SerializeField]
     private string m_description;
+    [Header("Item Image")]
+    [SerializeField]
+    private Sprite m_graphic;
+    [Header("Item Rarity")]
     [SerializeField]
     private Rarity m_rarity;
+    [Header("Recipe to make this Item")]
     [SerializeField]
     private Recipe m_recipe;
+    
 
     public int Id               { get { return m_id; }          set { m_id = value; } }
     public Sprite Graphic       { get { return m_graphic; }     set { m_graphic = value; } }
